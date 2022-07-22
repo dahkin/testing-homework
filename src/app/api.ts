@@ -17,12 +17,12 @@ import { OperationAPI, OperationType } from '@features/operations/types';
 
 export const initializeAPI = (): void => {
   initializeApp({
-    apiKey: 'AIzaSyDTAukz4Ep3A-SxY_pMJ7W9xwdrZA6MiYY',
-    authDomain: 'karpov-money-redux.firebaseapp.com',
-    projectId: 'karpov-money-redux',
-    storageBucket: 'karpov-money-redux.appspot.com',
-    messagingSenderId: '162498138521',
-    appId: '1:162498138521:web:e00917b149a8dadc3c4308',
+    apiKey: 'AIzaSyAI6terZXKtioEI5Dq4k0ZQQYmIhimgQqg',
+    authDomain: 'money-ee0a6.firebaseapp.com',
+    projectId: 'money-ee0a6',
+    storageBucket: 'money-ee0a6.appspot.com',
+    messagingSenderId: '744168548122',
+    appId: '1:744168548122:web:4d8da5125862aeca97aea3',
   });
 
   getFirestore();
@@ -30,10 +30,8 @@ export const initializeAPI = (): void => {
 
 export const apiGetCard = async (id: string): Promise<CardsAPI | null> => {
   const db = getFirestore();
-
   try {
     const querySnapshot = await getDoc(doc(db, 'cards', id));
-
     if (querySnapshot.exists()) {
       const data = querySnapshot.data() as Omit<CardsAPI, 'id'>;
 
@@ -42,10 +40,10 @@ export const apiGetCard = async (id: string): Promise<CardsAPI | null> => {
         ...data,
       };
     } else {
-      return null;
+      throw Error('Такой карты нет');
     }
   } catch (error) {
-    //
+    return Promise.reject(error);
   }
 
   return null;
@@ -61,14 +59,13 @@ export const apiGetCards = async (): Promise<CardsAPI[]> => {
 
     querySnapshot.forEach((doc) => {
       const data = doc.data() as Omit<CardsAPI, 'id'>;
-
       result.push({
         id: doc.id,
         ...data,
       });
     });
   } catch (error) {
-    //
+    return Promise.reject(error);
   }
 
   return result;
@@ -95,7 +92,7 @@ export const apiSaveNewCard = async (data: CardSaveData): Promise<CardsAPI | nul
       return doc;
     }
   } catch (error) {
-    //
+    return Promise.reject(error);
   }
 
   return null;
@@ -114,7 +111,7 @@ export const apiUpdateCard = async (id: string, data: Partial<CardSaveData>): Pr
       return updatedDoc;
     }
   } catch (error) {
-    //
+    return Promise.reject(error);
   }
 
   return null;
@@ -126,7 +123,7 @@ export const apiDeleteCard = async (id: string): Promise<void> => {
   try {
     await deleteDoc(doc(db, 'cards', id));
   } catch (error) {
-    //
+    return Promise.reject(error);
   }
 };
 
@@ -144,10 +141,10 @@ export const apiGetOperation = async (id: string): Promise<OperationAPI | null> 
         ...data,
       };
     } else {
-      return null;
+      throw Error('Такой транзакции нет');
     }
   } catch (error) {
-    //
+    return Promise.reject(error);
   }
 
   return null;
@@ -170,7 +167,7 @@ export const apiGetOperations = async (): Promise<OperationAPI[]> => {
       });
     });
   } catch (error) {
-    //
+    return Promise.reject(error);
   }
 
   return result;
@@ -198,7 +195,7 @@ export const apiSaveNewOperation = async (data: OperationSaveData): Promise<Oper
       return doc;
     }
   } catch (error) {
-    //
+    return Promise.reject(error);
   }
 
   return null;
@@ -220,7 +217,7 @@ export const apiUpdateOperation = async (
       return updatedDoc;
     }
   } catch (error) {
-    //
+    return Promise.reject(error);
   }
 
   return null;
@@ -232,6 +229,6 @@ export const apiDeleteOperation = async (id: string): Promise<void> => {
   try {
     await deleteDoc(doc(db, 'transactions', id));
   } catch (error) {
-    //
+    return Promise.reject(error);
   }
 };

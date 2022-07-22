@@ -19,7 +19,14 @@ export const Header: FC = () => {
     <>
       <div className="Header">
         <Typography.Title>Мой кошелёк</Typography.Title>
-        <Button type="primary" shape="circle" size="large" icon={<PlusOutlined />} onClick={showModal} />
+        <Button
+          type="primary"
+          shape="circle"
+          size="large"
+          icon={<PlusOutlined />}
+          onClick={showModal}
+          data-testid="add-card-btn"
+        />
       </div>
 
       <CardModal closeModal={closeModal} isOpenModal={isModalVisible} />

@@ -4,7 +4,7 @@ import './History.css';
 import { List } from 'antd';
 import { HistoryHeader } from '../HistoryHeader/HistoryHeader';
 import { HistoryListItem } from '../HistoryListItem/HistoryListItem';
-import { fetchOperaions } from '@features/operations/actions';
+import { fetchOperations } from '@features/operations/actions';
 import { Dispatch } from '@app/store';
 import { getOperations } from '@features/operations/selectors';
 
@@ -15,7 +15,7 @@ export const History: FC = () => {
 
   useEffect(() => {
     setLoader(true);
-    dispatch(fetchOperaions()).finally(() => setLoader(false));
+    dispatch(fetchOperations()).finally(() => setLoader(false));
   }, []);
 
   return (
@@ -28,6 +28,7 @@ export const History: FC = () => {
           itemLayout="horizontal"
           loading={isLoading}
           dataSource={operations}
+          data-testid={isLoading ? 'history-list-loading' : 'history-list'}
           renderItem={(item) => (
             <HistoryListItem
               id={item.id}

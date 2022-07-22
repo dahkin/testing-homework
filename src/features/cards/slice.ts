@@ -1,6 +1,5 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CardsAPI } from './types';
-import { apiSaveNewCard, CardSaveData } from '@app/api';
 
 interface InitialState {
   list: CardsAPI[];
@@ -39,13 +38,5 @@ const cardsSlice = createSlice({
 });
 
 export const { addCard, updateCard, deleteCard, setCards } = cardsSlice.actions;
-
-export const addCardApi = createAsyncThunk('api/addCard', async (data: CardSaveData, thunk) => {
-  const newCard = await apiSaveNewCard(data);
-
-  if (newCard !== null) {
-    thunk.dispatch(addCard(newCard));
-  }
-});
 
 export default cardsSlice.reducer;

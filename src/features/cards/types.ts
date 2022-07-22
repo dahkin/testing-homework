@@ -1,5 +1,3 @@
-import { Timestamp } from 'firebase/firestore';
-
 export type CardColor = 'blue' | 'cyan' | 'pink' | 'dark-blue';
 
 export interface CardsAPI {
@@ -7,5 +5,8 @@ export interface CardsAPI {
   balance: number;
   color: CardColor;
   number: string;
-  created: Timestamp;
+  created: {
+    nanoseconds: number;
+    seconds: number;
+  };
 }

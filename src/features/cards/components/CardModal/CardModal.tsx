@@ -2,9 +2,9 @@ import React, { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { Modal, Form, Input, message, Radio } from 'antd';
 import { CardColor } from '@features/cards/types';
-import { updateCard } from '@features/cards/actions';
-import { addCardApi } from '@features/cards/slice';
+import { updateCard, addCard } from '@features/cards/actions';
 import { Dispatch } from '@app/store';
+import { maskNumber } from '@app/utils';
 
 interface Props {
   isOpenModal: boolean;
@@ -35,16 +35,16 @@ export const CardModal: FC<Props> = ({ isOpenModal, closeModal, id, cardNumber =
     const data = {
       color: formData.color,
       balance: parseFloat(formData.balance),
-      number: `${formData.number.slice(0, 4)} **** **** ${formData.number.slice(-4)}`,
+      number: maskNumber(formData.number),
     };
 
     if (id) {
-      dispatch(updateCard(id, data)).then(() => {
+      dispatch(updateCard({ id: id, data: data })).then(() => {
         message.success('Карта обновлена!');
         onCancel();
       });
     } else {
-      dispatch(addCardApi(data)).then(() => {
+      dispatch(addCard(data)).then(() => {
         message.success('Карта сохранена!');
         onCancel();
       });
@@ -64,26 +64,57 @@ export const CardModal: FC<Props> = ({ isOpenModal, closeModal, id, cardNumber =
       okText="Сохранить"
       cancelText="Отменить"
       closable
+      data-testid="card-modal"
     >
       <Form form={form} layout="vertical" onFinish={onValid} autoComplete="off">
-        <Form.Item label="Цвет" name="color" initialValue={color} rules={[{ required: true }]}>
+        <Form.Item
+          label="Цвет"
+          name="color"
+          initialValue={color}
+          rules={[{ required: true, message: 'Обязательное поле' }]}
+        >
           <Radio.Group>
-            <Radio.Button value="blue">Синий</Radio.Button>
-            <Radio.Button value="cyan">Бирюзовый</Radio.Button>
-            <Radio.Button value="pink">Розовый</Radio.Button>
-            <Radio.Button value="dark-blue">Темно-синий</Radio.Button>
+            <Radio.Button data-testid="color" value="blue">
+              Синий
+            </Radio.Button>
+            <Radio.Button data-testid="color" value="cyan">
+              Бирюзовый
+            </Radio.Button>
+            <Radio.Button data-testid="color" value="pink">
+              Розовый
+            </Radio.Button>
+            <Radio.Button data-testid="color" value="dark-blue">
+              Темно-синий
+            </Radio.Button>
           </Radio.Group>
         </Form.Item>
         <Form.Item
           name="number"
           label="Номер карты"
           initialValue={cardNumber}
-          rules={[{ required: true }, { type: 'string', min: 16, max: 19 }]}
+          rules={[
+            { required: true, message: 'Обязательное поле' },
+            {
+              type: 'string',
+              pattern: new RegExp(/^\d+$/),
+              min: 16,
+              max: 19,
+              message: 'Номер может содержать только цифры (от 16-ти до 19-ти)',
+            },
+          ]}
         >
-          <Input placeholder="1111 1111 1111 1111" />
+          <Input data-testid="number" placeholder="1111 1111 1111 1111" />
         </Form.Item>
-        <Form.Item name="balance" label="Текущий баланс ₽" initialValue={balance} rules={[{ required: true }]}>
-          <Input placeholder="Сумма в рублях" />
+        <Form.Item
+          name="balance"
+          label="Текущий баланс ₽"
+          initialValue={balance}
+          rules={[
+            { required: true, message: 'Обязательное поле' },
+            { type: 'string', pattern: new RegExp(/^\d+$/), message: 'Баланс может содержать только цифры' },
+          ]}
+        >
+          <Input data-testid="balance" placeholder="Сумма в рублях" />
         </Form.Item>
       </Form>
     </Modal>

@@ -2,11 +2,13 @@ import { configureStore, ThunkAction, ThunkDispatch, PayloadAction } from '@redu
 import cardsReducer from '../features/cards/slice';
 import operationsReducer from '../features/operations/slice';
 
+export const reducer = {
+  cards: cardsReducer,
+  operations: operationsReducer,
+};
+
 export const store = configureStore({
-  reducer: {
-    cards: cardsReducer,
-    operations: operationsReducer,
-  },
+  reducer,
 });
 
 export type RootState = ReturnType<typeof store.getState>;

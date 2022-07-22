@@ -14,21 +14,30 @@ export const CardsList: FC = () => {
 
   useEffect(() => {
     setLoader(true);
-    dispatch(fetchCards()).finally(() => setLoader(false));
+    dispatch(fetchCards()).then(() => {
+      setLoader(false);
+    });
   }, []);
 
   if (isLoading) {
     return (
       <Spin>
-        <section className="CardsListLoader" />
+        <section className="CardsListLoader" data-testid="cards-list-loader" />
       </Spin>
     );
   }
 
   return (
-    <section className="CardsList">
+    <section className="CardsList" data-testid="cards-list">
       {cards.map((item) => (
-        <CardItem key={item.id} id={item.id} balance={item.balance} cardNumber={item.number} color={item.color} />
+        <CardItem
+          key={item.id}
+          id={item.id}
+          balance={item.balance}
+          cardNumber={item.number}
+          color={item.color}
+          data-testid="card-item"
+        />
       ))}
     </section>
   );

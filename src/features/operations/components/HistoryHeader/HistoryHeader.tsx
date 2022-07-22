@@ -19,7 +19,13 @@ export const HistoryHeader: FC = () => {
     <>
       <header className="HistoryHeader">
         <Typography.Title level={3}>История операций</Typography.Title>
-        <Button type="primary" shape="circle" icon={<PlusOutlined />} onClick={showModal} />
+        <Button
+          data-testid="add-operation-btn"
+          type="primary"
+          shape="circle"
+          icon={<PlusOutlined />}
+          onClick={showModal}
+        />
       </header>
 
       <HistoryModal closeModal={closeModal} isOpenModal={isModalVisible} />

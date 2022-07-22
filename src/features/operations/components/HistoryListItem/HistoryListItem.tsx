@@ -46,7 +46,7 @@ export const HistoryListItem: FC<Props> = ({ id, title, text, balance, isIncome 
 
   return (
     <>
-      <List.Item>
+      <List.Item data-testid="history-item">
         <List.Item.Meta
           avatar={<Avatar src={`https://joeschmoe.io/api/v1/random/?${Math.random()}`} />}
           title={title}
@@ -56,16 +56,16 @@ export const HistoryListItem: FC<Props> = ({ id, title, text, balance, isIncome 
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item key="1" onClick={showEditModal}>
+                <Menu.Item data-testid="update-operation-btn" key="1" onClick={showEditModal}>
                   Изменить
                 </Menu.Item>
-                <Menu.Item key="2" danger onClick={showDeleteConfirm}>
+                <Menu.Item data-testid="delete-operation-btn" key="2" danger onClick={showDeleteConfirm}>
                   Удалить
                 </Menu.Item>
               </Menu>
             }
           >
-            <Button size="small" shape="circle" icon={<EllipsisOutlined />} />
+            <Button data-testid="operation-dropdown-btn" size="small" shape="circle" icon={<EllipsisOutlined />} />
           </Dropdown>
           <Typography.Text type={isIncome ? 'success' : 'secondary'}>
             {isIncome ? '+' : ''}

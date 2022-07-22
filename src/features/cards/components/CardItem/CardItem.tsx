@@ -51,22 +51,23 @@ export const CardItem: FC<Props> = ({ id, balance, cardNumber, color }) => {
         className={classnames('CardItem', {
           [`CardItem--${color}`]: color !== undefined,
         })}
+        data-testid="card-item"
       >
         <header className="CardItem__header">
           <Statistic value={balance} groupSeparator=" " suffix="₽" valueStyle={{ color: 'white' }} />
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item key="1" onClick={showEditModal}>
+                <Menu.Item data-testid="update-card-btn" key="1" onClick={showEditModal}>
                   Изменить
                 </Menu.Item>
-                <Menu.Item key="2" danger onClick={showDeleteConfirm}>
+                <Menu.Item data-testid="delete-card-btn" key="2" danger onClick={showDeleteConfirm}>
                   Удалить
                 </Menu.Item>
               </Menu>
             }
           >
-            <Button shape="circle" size="small" icon={<EllipsisOutlined />} />
+            <Button data-testid="card-dropdown-btn" shape="circle" size="small" icon={<EllipsisOutlined />} />
           </Dropdown>
         </header>
 

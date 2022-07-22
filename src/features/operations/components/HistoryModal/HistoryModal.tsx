@@ -51,7 +51,7 @@ export const HistoryModal: FC<Props> = ({
     };
 
     if (id) {
-      dispatch(updateOperation(id, data)).then(() => {
+      dispatch(updateOperation({ id: id, data: data })).then(() => {
         message.success('Операция обновлена!');
         onCancel();
       });
@@ -76,28 +76,56 @@ export const HistoryModal: FC<Props> = ({
       okText="Сохранить"
       cancelText="Отменить"
       closable
+      data-testid="operation-modal"
     >
       <Form form={form} layout="vertical" onFinish={onValid} autoComplete="off">
-        <Form.Item label="Тип" name="type" initialValue={isIncome ? 'income' : 'expense'} rules={[{ required: true }]}>
+        <Form.Item
+          label="Тип"
+          name="type"
+          initialValue={isIncome ? 'income' : 'expense'}
+          rules={[{ required: true, message: 'Обязательное поле' }]}
+        >
           <Radio.Group>
-            <Radio.Button value="income">Доход</Radio.Button>
-            <Radio.Button value="expense">Расход</Radio.Button>
+            <Radio.Button data-testid="type" value="income">
+              Доход
+            </Radio.Button>
+            <Radio.Button data-testid="type" value="expense">
+              Расход
+            </Radio.Button>
           </Radio.Group>
         </Form.Item>
-        <Form.Item name="name" label="Название платежа" initialValue={title} rules={[{ required: true }]}>
-          <Input placeholder="Продукты" />
+        <Form.Item
+          name="name"
+          label="Название платежа"
+          initialValue={title}
+          rules={[{ required: true, message: 'Обязательное поле' }]}
+        >
+          <Input data-testid="name" placeholder="Продукты" />
         </Form.Item>
-        <Form.Item name="cardNumber" label="Карта" initialValue={text} rules={[{ required: true }]}>
-          <Select placeholder="Выберите карту">
+        <Form.Item
+          name="cardNumber"
+          label="Карта"
+          initialValue={text}
+          rules={[{ required: true, message: 'Обязательное поле' }]}
+        >
+          <Select data-testid="cardNumber" placeholder="Выберите карту" getPopupContainer={(node) => node.parentNode}>
             {cards.map((item) => (
-              <Select.Option key={item.id} value={item.number}>
+              <Select.Option data-testid="cardNumber-value" key={item.id} value={item.number}>
                 {item.number}
               </Select.Option>
             ))}
           </Select>
         </Form.Item>
-        <Form.Item name="value" label="Сумма ₽" initialValue={balance} rules={[{ required: true }]}>
-          <Input placeholder="Сумма в рублях" />
+        <Form.Item
+          name="value"
+          label="Сумма ₽"
+          initialValue={balance}
+          rules={[
+            { required: true, message: 'Обязательное поле' },
+            { type: 'string', pattern: new RegExp(/^\d+$/), message: 'Сумма может содержать только цифры' },
+          ]}
+        >
+          <Input data-testid="value" placeholder="Сумма в рублях" />
         </Form.Item>
       </Form>
     </Modal>

@@ -1,5 +1,3 @@
-import { Timestamp } from 'firebase/firestore';
-
 export type OperationType = 'income' | 'expense';
 
 export interface OperationAPI {
@@ -8,5 +6,8 @@ export interface OperationAPI {
   value: number;
   type: OperationType;
   cardNumber: string;
-  created: Timestamp;
+  created: {
+    nanoseconds: number;
+    seconds: number;
+  };
 }

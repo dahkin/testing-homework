@@ -5,48 +5,41 @@ import {
   apiUpdateOperation,
   OperationSaveData,
 } from '@app/api';
-import { AppAction } from '@app/store';
 import {
   addOperation as addOperationState,
   deleteOperation as deleteOperationState,
   updateOperation as updateOperationState,
   setOperations as setOperationsState,
 } from './slice';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export const fetchOperaions = (): AppAction<Promise<void>> => (dispatch) => {
+export const fetchOperations = createAsyncThunk('api/fetchOperations', async (_, thunk) => {
   return apiGetOperations().then((operations) => {
-    // @ts-ignore
-    dispatch(setOperationsState(operations));
+    thunk.dispatch(setOperationsState(operations));
   });
-};
+});
 
-export const addOperation =
-  (data: OperationSaveData): AppAction<Promise<void>> =>
-  (dispatch) => {
-    return apiSaveNewOperation(data).then((operaion) => {
-      if (operaion) {
-        // @ts-ignore
-        dispatch(addOperationState(operaion));
-      }
-    });
-  };
+export const addOperation = createAsyncThunk('api/addOperation', async (data: OperationSaveData, thunk) => {
+  return apiSaveNewOperation(data).then((operation) => {
+    if (operation) {
+      thunk.dispatch(addOperationState(operation));
+    }
+  });
+});
 
-export const updateOperation =
-  (id: string, data: Partial<OperationSaveData>): AppAction<Promise<void>> =>
-  (dispatch) => {
-    return apiUpdateOperation(id, data).then((newOperation) => {
+export const updateOperation = createAsyncThunk(
+  'api/updateOperation',
+  async (params: { id: string; data: Partial<OperationSaveData> }, thunk) => {
+    return apiUpdateOperation(params.id, params.data).then((newOperation) => {
       if (newOperation) {
-        // @ts-ignore
-        dispatch(updateOperationState({ id: newOperation.id, newOperation }));
+        thunk.dispatch(updateOperationState({ id: newOperation.id, newOperation }));
       }
     });
-  };
+  }
+);
 
-export const deleteOperation =
-  (id: string): AppAction<Promise<void>> =>
-  (dispatch) => {
-    return apiDeleteOperation(id).then(() => {
-      // @ts-ignore
-      dispatch(deleteOperationState(id));
-    });
-  };
+export const deleteOperation = createAsyncThunk('api/deleteOperation', async (id: string, thunk) => {
+  return apiDeleteOperation(id).then(() => {
+    thunk.dispatch(deleteOperationState(id));
+  });
+});
