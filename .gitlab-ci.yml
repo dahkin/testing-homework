@@ -22,8 +22,6 @@ test:
     - npm ci
   script:
     - npm run test
-    - npm run start &
-    - npm run cypress:run
   only:
     - master
 
