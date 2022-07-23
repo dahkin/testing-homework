@@ -68,7 +68,6 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      favicon: './src/images/favicon.ico',
       template: './src/app/index.html',
       excludeChunks: ['sw'],
     }),
