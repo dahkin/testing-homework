@@ -1,6 +1,5 @@
 stages:
   - test
-  - build
   - deploy
 
 code_quality:
@@ -23,23 +22,6 @@ test:
   script:
     - npm run test
   only:
-    - master
-
-build:
-  image: node:16.16.0
-  stage: build
-  before_script:
-    - npm ci
-    - npm run locale:download
-  script:
-    - SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_RELEASE=$CI_COMMIT_SHORT_SHA npm run build
-  after_script:
-    - find . -type f -iname \*.map -delete
-  artifacts:
-    paths:
-      - dist
-  only:
-    - merge_requests
     - master
 
 pages:
