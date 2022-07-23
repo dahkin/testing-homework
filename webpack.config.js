@@ -5,7 +5,6 @@ const StylelintPlugin = require('stylelint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlInlineScriptWebpackPlugin = require('html-inline-script-webpack-plugin');
 const CSSMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin');
-const SentryPlugin = require('@sentry/webpack-plugin');
 
 const mode = process.env.NODE_ENV || 'production';
 
@@ -94,17 +93,5 @@ const config = {
   },
   devtool: mode === 'production' ? 'hidden-source-map' : 'eval-cheap-module-source-map',
 };
-
-if (process.env.SENTRY_RELEASE) {
-  config.plugins.push(
-    new SentryPlugin({
-      include: './dist',
-      release: process.env.SENTRY_RELEASE,
-      authToken: process.env.SENTRY_AUTH_TOKEN,
-      org: 'newsfeed-hf',
-      project: 'newsfeed-web',
-    })
-  );
-}
 
 module.exports = config;
