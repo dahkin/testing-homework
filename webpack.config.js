@@ -44,11 +44,6 @@ const config = {
         type: 'asset/resource',
       },
       {
-        test: /\.webmanifest$/i,
-        use: 'webpack-webmanifest-loader',
-        type: 'asset/resource',
-      },
-      {
         test: /\.(ts|tsx)$/,
         use: 'ts-loader',
         exclude: [/node_modules/, /worker\.ts$/],
