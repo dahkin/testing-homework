@@ -12,11 +12,11 @@ interface Props {
   id: string;
   title: string;
   text: string;
-  balance: number;
+  value: number;
   isIncome: boolean;
 }
 
-export const HistoryListItem: FC<Props> = ({ id, title, text, balance, isIncome = false }) => {
+export const HistoryListItem: FC<Props> = ({ id, title, text, value, isIncome = false }) => {
   const dispatch = useDispatch<Dispatch>();
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 
@@ -69,7 +69,7 @@ export const HistoryListItem: FC<Props> = ({ id, title, text, balance, isIncome 
           </Dropdown>
           <Typography.Text type={isIncome ? 'success' : 'secondary'}>
             {isIncome ? '+' : ''}
-            {balance.toLocaleString('ru-RU', {
+            {value.toLocaleString('ru-RU', {
               style: 'currency',
               currency: 'RUB',
               maximumFractionDigits: 0,
@@ -80,7 +80,7 @@ export const HistoryListItem: FC<Props> = ({ id, title, text, balance, isIncome 
 
       <HistoryModal
         id={id}
-        balance={balance}
+        value={value}
         title={title}
         text={text}
         isIncome={isIncome}

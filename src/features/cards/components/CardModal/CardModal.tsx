@@ -1,23 +1,22 @@
 import React, { FC } from 'react';
 import { useDispatch } from 'react-redux';
-import { Modal, Form, Input, message, Radio } from 'antd';
+import { InputNumber, Modal, Form, Input, message, Radio } from 'antd';
 import { CardColor } from '@features/cards/types';
 import { updateCard, addCard } from '@features/cards/actions';
 import { Dispatch } from '@app/store';
-import { maskNumber } from '@app/utils';
 
 interface Props {
   isOpenModal: boolean;
   closeModal: () => any;
   id?: string;
   cardNumber?: string;
-  balance?: string;
+  balance?: number;
   color?: CardColor;
 }
 
 interface CardFormData {
   number: string;
-  balance: string;
+  balance: number;
   color: CardColor;
 }
 
@@ -34,8 +33,8 @@ export const CardModal: FC<Props> = ({ isOpenModal, closeModal, id, cardNumber =
     const formData = form.getFieldsValue() as CardFormData;
     const data = {
       color: formData.color,
-      balance: parseFloat(formData.balance),
-      number: maskNumber(formData.number),
+      balance: formData.balance,
+      number: formData.number,
     };
 
     if (id) {
@@ -109,12 +108,9 @@ export const CardModal: FC<Props> = ({ isOpenModal, closeModal, id, cardNumber =
           name="balance"
           label="Текущий баланс ₽"
           initialValue={balance}
-          rules={[
-            { required: true, message: 'Обязательное поле' },
-            { type: 'string', pattern: new RegExp(/^\d+$/), message: 'Баланс может содержать только цифры' },
-          ]}
+          rules={[{ required: true, message: 'Обязательное поле' }]}
         >
-          <Input data-testid="balance" placeholder="Сумма в рублях" />
+          <InputNumber data-testid="balance" placeholder="Сумма в рублях" style={{ width: '100%' }} />
         </Form.Item>
       </Form>
     </Modal>

@@ -7,6 +7,7 @@ import { HistoryListItem } from '../HistoryListItem/HistoryListItem';
 import { fetchOperations } from '@features/operations/actions';
 import { Dispatch } from '@app/store';
 import { getOperations } from '@features/operations/selectors';
+import { maskNumber } from '@app/utils';
 
 export const History: FC = () => {
   const dispatch = useDispatch<Dispatch>();
@@ -21,7 +22,6 @@ export const History: FC = () => {
   return (
     <section className="History">
       <HistoryHeader />
-
       <div className="History__list">
         <List
           size="small"
@@ -33,8 +33,8 @@ export const History: FC = () => {
             <HistoryListItem
               id={item.id}
               title={item.name}
-              text={item.cardNumber}
-              balance={item.value}
+              text={maskNumber(item.cardNumber)}
+              value={item.value}
               isIncome={item.type === 'income'}
             />
           )}

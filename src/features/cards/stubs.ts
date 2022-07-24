@@ -1,7 +1,7 @@
 import { CardsAPI } from '@features/cards/types';
 
 export const cardNewStub: Omit<CardsAPI, 'id' | 'created'> = {
-  number: '1232 **** **** 3123',
+  number: '1232123212321232',
   balance: 4554,
   color: 'pink',
 };
@@ -9,7 +9,7 @@ export const cardNewStub: Omit<CardsAPI, 'id' | 'created'> = {
 export const cardAPIStub: Omit<CardsAPI, 'id'> = {
   balance: 4554,
   color: 'pink',
-  number: '1232 **** **** 3123',
+  number: '1232123212321232',
   created: {
     seconds: 123123,
     nanoseconds: 123123,
@@ -20,7 +20,7 @@ export const cardsAPIStub: Omit<CardsAPI, 'id'>[] = [
   {
     balance: 4554,
     color: 'pink',
-    number: '1232 **** **** 3123',
+    number: '1232123212321232',
     created: {
       seconds: 123123,
       nanoseconds: 123123,
@@ -29,7 +29,7 @@ export const cardsAPIStub: Omit<CardsAPI, 'id'>[] = [
   {
     balance: 4554,
     color: 'pink',
-    number: '6789 **** **** 3123',
+    number: '6789678967896789',
     created: {
       seconds: 123123,
       nanoseconds: 123123,

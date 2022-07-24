@@ -1,7 +1,14 @@
 import { getDoc, getDocs, Timestamp, addDoc } from '../__mocks__/firebase/firestore';
-import { apiGetCard, apiGetCards, apiGetOperation, apiGetOperations, apiSaveNewCard } from '@app/api';
+import {
+  apiGetCard,
+  apiGetCards,
+  apiGetOperation,
+  apiGetOperations,
+  apiSaveNewCard,
+  apiSaveNewOperation,
+} from '@app/api';
 import { cardAPIStub, cardNewStub, cardsFirebaseAPIStub } from '@features/cards/stubs';
-import { operationAPIStub, operationsFirebaseAPIStub } from '@features/operations/stubs';
+import { operationAPIStub, operationNewStub, operationsFirebaseAPIStub } from '@features/operations/stubs';
 
 describe('apiGetCard', () => {
   afterEach(() => {
@@ -180,5 +187,53 @@ describe('apiGetOperations', () => {
     const operations = apiGetOperations();
 
     await expect(operations).rejects.toThrowError();
+  });
+});
+
+describe('apiSaveNewOperation', () => {
+  beforeEach(() => {
+    const id = '1';
+
+    getDoc.mockResolvedValue({
+      exists: () => true,
+      data: () => operationAPIStub,
+      id,
+    } as any);
+
+    const time = {
+      seconds: 123123,
+      nanoseconds: 123123,
+    };
+    Timestamp.now.mockResolvedValue(time as any);
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
+  test('Возвращает новую транзакцию после добавления', async () => {
+    const id = '1';
+    addDoc.mockResolvedValue({
+      id,
+    } as any);
+
+    const operation = await apiSaveNewOperation(operationNewStub);
+    expect(operation).toEqual({
+      id,
+      created: {
+        seconds: 123123,
+        nanoseconds: 123123,
+      },
+      ...operationNewStub,
+    });
+  });
+
+  test('Возвращает ошибку, если транзакция не добавилась', async () => {
+    addDoc.mockResolvedValue({} as any);
+    getDoc.mockResolvedValue({} as any);
+
+    const operation = apiSaveNewOperation(operationNewStub);
+
+    await expect(operation).rejects.toThrowError();
   });
 });

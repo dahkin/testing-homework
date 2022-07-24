@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal, Form, Input, message, Radio, Select } from 'antd';
+import { Modal, Form, Input, InputNumber, message, Radio, Select } from 'antd';
 import { OperationType } from '@features/operations/types';
 import { updateOperation, addOperation } from '@features/operations/actions';
 import { Dispatch } from '@app/store';
 import { getCards } from '@features/cards/selectors';
+import { maskNumber } from '@app/utils';
 
 interface Props {
   isOpenModal: boolean;
@@ -12,13 +13,13 @@ interface Props {
   id?: string;
   title?: string;
   text?: string;
-  balance?: number;
+  value?: number;
   isIncome?: boolean;
 }
 
 interface OperationFormData {
   name: string;
-  value: string;
+  value: number;
   type: OperationType;
   cardNumber: string;
 }
@@ -29,7 +30,7 @@ export const HistoryModal: FC<Props> = ({
   id,
   title = '',
   text = '',
-  balance = '',
+  value = null,
   isIncome = false,
 }) => {
   const dispatch = useDispatch<Dispatch>();
@@ -45,7 +46,7 @@ export const HistoryModal: FC<Props> = ({
     const formData = form.getFieldsValue() as OperationFormData;
     const data = {
       name: formData.name,
-      value: parseFloat(formData.value),
+      value: formData.value,
       type: formData.type,
       cardNumber: formData.cardNumber,
     };
@@ -111,7 +112,7 @@ export const HistoryModal: FC<Props> = ({
           <Select data-testid="cardNumber" placeholder="Выберите карту" getPopupContainer={(node) => node.parentNode}>
             {cards.map((item) => (
               <Select.Option data-testid="cardNumber-value" key={item.id} value={item.number}>
-                {item.number}
+                {maskNumber(item.number)}
               </Select.Option>
             ))}
           </Select>
@@ -119,13 +120,10 @@ export const HistoryModal: FC<Props> = ({
         <Form.Item
           name="value"
           label="Сумма ₽"
-          initialValue={balance}
-          rules={[
-            { required: true, message: 'Обязательное поле' },
-            { type: 'string', pattern: new RegExp(/^\d+$/), message: 'Сумма может содержать только цифры' },
-          ]}
+          initialValue={value}
+          rules={[{ required: true, message: 'Обязательное поле' }]}
         >
-          <Input data-testid="value" placeholder="Сумма в рублях" />
+          <InputNumber data-testid="value" placeholder="Сумма в рублях" style={{ width: '100%' }} />
         </Form.Item>
       </Form>
     </Modal>

@@ -6,6 +6,7 @@ import { CardsList } from './CardsList';
 import { reducer } from '@app/store';
 import { cardsFirebaseAPIStub } from '@features/cards/stubs';
 import { getDocs } from '../../../../__mocks__/firebase/firestore';
+import { maskNumber } from '@app/utils';
 
 describe('Карты', () => {
   beforeEach(() => {
@@ -17,7 +18,6 @@ describe('Карты', () => {
   });
 
   test('Рендерит спиннер до загрузки данных', async () => {
-    // Не получилось вынести в beforeEach, лоадинг стейт тогда не ловится
     const store = configureStore({ reducer });
 
     render(
@@ -28,7 +28,8 @@ describe('Карты', () => {
 
     expect(screen.getByTestId('cards-list-loader')).toBeInTheDocument();
     expect(screen.queryByTestId('cards-list')).toBeNull();
-    // Падает с ошибкой без этой проверки
+    // Падает с ворнингом без этого waitForElementToBeRemoved:
+    // Warning: An update to CardsList inside a test was not wrapped in act(...).
     await waitForElementToBeRemoved(() => screen.queryByTestId('cards-list-loader'));
   });
 
@@ -45,7 +46,9 @@ describe('Карты', () => {
     expect(screen.queryByTestId('cards-list-loader')).toBeNull();
 
     // Рендер соответствующих карточек
-    cardsFirebaseAPIStub.forEach((card) => expect(screen.getByText(card.data().number)).toBeInTheDocument());
+    cardsFirebaseAPIStub.forEach((card) =>
+      expect(screen.getByText(maskNumber(card.data().number))).toBeInTheDocument()
+    );
   });
 
   test('Не рендерит ничего, если список пустой', async () => {

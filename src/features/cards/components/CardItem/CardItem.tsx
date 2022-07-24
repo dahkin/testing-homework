@@ -9,6 +9,7 @@ import { CardModal } from '@features/cards/components/CardModal/CardModal';
 import { CardColor } from '@features/cards/types';
 import { deleteCard } from '@features/cards/actions';
 import { Dispatch } from '@app/store';
+import { maskNumber } from '@app/utils';
 
 interface Props {
   balance: number;
@@ -71,13 +72,13 @@ export const CardItem: FC<Props> = ({ id, balance, cardNumber, color }) => {
           </Dropdown>
         </header>
 
-        <Typography.Text style={{ color: 'white' }}>{cardNumber}</Typography.Text>
+        <Typography.Text style={{ color: 'white' }}>{maskNumber(cardNumber)}</Typography.Text>
       </section>
 
       <CardModal
         id={id}
         cardNumber={cardNumber}
-        balance={balance.toString()}
+        balance={balance}
         color={color}
         closeModal={closeEditModal}
         isOpenModal={isEditModalVisible}

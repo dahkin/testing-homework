@@ -38,7 +38,7 @@ describe('Добавление карты', () => {
     cy.get('[data-testid="card-modal"] [role="dialog"]:visible').within(() => {
       // Проверить изначальные данные
       cy.get('[data-testid="color"][value="blue"]').should('be.checked');
-      cy.get('[data-testid="number"]').should('have.value', '1234 **** **** 5678');
+      cy.get('[data-testid="number"]').should('have.value', '1234567812345678');
       cy.get('[data-testid="balance"]').should('have.value', '3400');
       // Изменить данные
       cy.get('[data-testid="color"][value="pink"]').parents('label').click();
