@@ -30,7 +30,7 @@ cypress_test:
   script:
     - npm ci
     - npm run start &
-    - npx cypress run --browser firefox
+    - npx cypress run
   only:
     - master
 
@@ -39,7 +39,7 @@ cypress_test_another:
   stage: test
   script:
     - npm ci
-    - npm run start:ci &
+    - npm run start &
     - npx cypress run
   only:
     - master
