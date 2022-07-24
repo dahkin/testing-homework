@@ -1,6 +1,5 @@
 describe('Добавление карты', () => {
   beforeEach(() => {
-    cy.wait(1000);
     cy.visit('http://localhost:8080');
     cy.wait(1000);
     cy.newCard();
