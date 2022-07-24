@@ -29,17 +29,7 @@ cypress_test:
   stage: test
   script:
     - npm ci
-    - npm run start &
-    - npx cypress run
-  only:
-    - master
-
-cypress_test_another:
-  image: node:latest
-  stage: test
-  script:
-    - npm ci
-    - npm run start &
+    - npm run start
     - npx cypress run
   only:
     - master
