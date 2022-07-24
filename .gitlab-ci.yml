@@ -25,12 +25,22 @@ test:
     - master
 
 cypress_test:
-  image: cypress/browsers:node16.16.0-chrome85-ff81
+  image: cypress/browsers:node12.14.1-chrome85-ff81
   stage: test
   script:
     - npm ci
     - npm run start:ci &
     - npx cypress run --browser firefox
+  only:
+    - master
+
+cypress_test_another:
+  image: node:latest
+  stage: test
+  script:
+    - npm ci
+    - npm run start:ci &
+    - npx cypress run
   only:
     - master
 
