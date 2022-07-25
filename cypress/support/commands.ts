@@ -38,7 +38,7 @@ Cypress.Commands.add('newCard', () => {
     // Сохранить
     cy.get('button').contains('Сохранить').click();
   });
-  cy.wait(1000);
+  cy.wait(2000);
 });
 
 Cypress.Commands.add('clearNewCard', () => {
@@ -66,7 +66,7 @@ Cypress.Commands.add('newTransaction', () => {
     // Сохранить
     cy.get('button').contains('Сохранить').click();
   });
-  cy.wait(1000);
+  cy.wait(2000);
 });
 
 Cypress.Commands.add('clearNewTransaction', () => {
